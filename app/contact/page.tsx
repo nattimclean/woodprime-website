@@ -29,7 +29,7 @@ export default function ContactPage() {
             <h2 className="font-semibold text-espresso">Direct Contact</h2>
             <div className="mt-4 flex flex-col gap-3">
               <CallButton />
-              <WhatsAppButton className="border-stone/30 text-espresso hover:bg-stone/5" />
+              <WhatsAppButton />
               <a href={`mailto:${SITE.email}`} className="text-sm text-stone hover:text-brass-dark">
                 {SITE.email}
               </a>

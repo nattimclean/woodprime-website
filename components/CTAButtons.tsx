@@ -17,7 +17,7 @@ export function WhatsAppButton({ className = "" }: { className?: string }) {
       href={SITE.whatsappHref}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center justify-center gap-2 rounded-md border border-cream/40 px-6 py-3 text-sm font-semibold text-cream transition hover:bg-cream/10 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#20bd5a] ${className}`}
     >
       WhatsApp Us
     </a>

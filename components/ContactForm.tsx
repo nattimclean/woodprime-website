@@ -4,18 +4,33 @@ import { useState } from "react";
 import { SITE } from "@/lib/site";
 
 export default function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const subject = encodeURIComponent(`New quote request from ${data.get("name")}`);
-    const body = encodeURIComponent(
-      `Name: ${data.get("name")}\nPhone: ${data.get("phone")}\nCity: ${data.get("city")}\nService: ${data.get("service")}\n\nMessage:\n${data.get("message")}`
-    );
-    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    const payload = {
+      name: data.get("name"),
+      phone: data.get("phone"),
+      city: data.get("city"),
+      service: data.get("service"),
+      message: data.get("message"),
+    };
+
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setStatus("sent");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+    }
   }
 
   return (
@@ -86,13 +101,19 @@ export default function ContactForm() {
       </div>
       <button
         type="submit"
-        className="w-full rounded-md bg-brass px-6 py-3 text-sm font-semibold text-espresso transition hover:bg-brass-light sm:w-auto"
+        disabled={status === "sending"}
+        className="w-full rounded-md bg-brass px-6 py-3 text-sm font-semibold text-espresso transition hover:bg-brass-light disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
-        Send Request
+        {status === "sending" ? "Sending..." : "Send Request"}
       </button>
-      {submitted && (
-        <p className="text-sm text-stone">
-          Opening your email client to send this request. You can also reach us directly by phone or WhatsApp.
+      {status === "sent" && (
+        <p className="text-sm font-medium text-green-700">
+          Thanks! Your request has been sent — we'll get back to you shortly.
+        </p>
+      )}
+      {status === "error" && (
+        <p className="text-sm font-medium text-red-700">
+          Something went wrong sending your request. Please call or WhatsApp us instead at {SITE.phoneDisplay}.
         </p>
       )}
     </form>

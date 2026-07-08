@@ -37,7 +37,7 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap justify-end gap-4">
               <QuoteButton />
-              <CallButton className="border border-brass bg-transparent text-brass-light hover:bg-brass/10" />
+              <CallButton className="border border-cream/80 bg-espresso/50 text-cream backdrop-blur-sm hover:bg-espresso/70" />
               <WhatsAppButton />
             </div>
           </div>
