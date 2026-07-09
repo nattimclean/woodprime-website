@@ -3,6 +3,7 @@ import Link from "next/link";
 import { QuoteButton, CallButton, WhatsAppButton } from "@/components/CTAButtons";
 import ServiceCard from "@/components/ServiceCard";
 import TradeNetwork from "@/components/TradeNetwork";
+import Testimonials from "@/components/Testimonials";
 import { SERVICES } from "@/lib/services";
 import { SERVICE_AREAS, SITE, PROCESS_STEPS, FEATURED_WORK } from "@/lib/site";
 
@@ -102,9 +103,6 @@ export default function HomePage() {
             <p className="text-sm font-semibold uppercase tracking-widest text-brass-dark">The Kind of Work We Do</p>
             <h2 className="mt-2 text-3xl font-bold text-espresso">Styles &amp; finishes we bring to life</h2>
           </div>
-          <Link href="/gallery" className="text-sm font-semibold text-brass-dark hover:text-brass">
-            View gallery →
-          </Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {FEATURED_WORK.map((item, i) => (
@@ -127,9 +125,6 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-        <p className="mt-4 text-xs text-stone/70">
-          Representative styles and finishes — real project photos from Wood Prime &amp; Renovation are coming soon.
-        </p>
       </section>
 
       <section className="bg-white py-16">
@@ -166,6 +161,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <Testimonials />
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <p className="text-sm font-semibold uppercase tracking-widest text-brass-dark text-center">

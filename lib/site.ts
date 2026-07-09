@@ -42,7 +42,6 @@ export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Service Areas", href: "/service-areas" },
-  { label: "Gallery", href: "/gallery" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -73,6 +72,21 @@ export const PROCESS_STEPS = [
       "We go through every detail together before calling a project done, from big-picture layout down to the last piece of trim.",
   },
 ];
+
+// Real customer reviews only. Add one object per review once a client has
+// actually given permission to publish their words — never invent entries
+// here. Once Wood Prime has reviews on Google Business Profile, replace this
+// manual list with the Google embed and set GOOGLE_REVIEWS_URL below.
+export const GOOGLE_REVIEWS_URL = ""; // e.g. "https://g.page/r/xxxxxxx/review"
+
+export type Testimonial = {
+  name: string;
+  location: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+  quote: string;
+};
+
+export const TESTIMONIALS: Testimonial[] = [];
 
 export const FEATURED_WORK = [
   {
