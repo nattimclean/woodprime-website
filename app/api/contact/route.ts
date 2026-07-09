@@ -7,6 +7,7 @@ import { SITE } from "@/lib/site";
 const GOOGLE_FORM_ID = "1FAIpQLSefTyNe9in-L1nyouTb4wzAlh3uT7W6bCiKAfVwBWwiPIiTIw";
 const GOOGLE_FORM_ENTRIES = {
   name: "entry.1680655636",
+  email: "entry.1305907961",
   phone: "entry.743095601",
   city: "entry.243224580",
   service: "entry.543470408",
@@ -15,6 +16,7 @@ const GOOGLE_FORM_ENTRIES = {
 
 async function logToGoogleSheet(fields: {
   name: string;
+  email?: string;
   phone: string;
   city?: string;
   service?: string;
@@ -22,6 +24,7 @@ async function logToGoogleSheet(fields: {
 }) {
   const params = new URLSearchParams();
   params.append(GOOGLE_FORM_ENTRIES.name, fields.name);
+  if (fields.email) params.append(GOOGLE_FORM_ENTRIES.email, fields.email);
   params.append(GOOGLE_FORM_ENTRIES.phone, fields.phone);
   if (fields.city) params.append(GOOGLE_FORM_ENTRIES.city, fields.city);
   if (fields.service) params.append(GOOGLE_FORM_ENTRIES.service, fields.service);
@@ -45,8 +48,9 @@ async function logToGoogleSheet(fields: {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const { name, phone, city, service, message } = data as {
+    const { name, email, phone, city, service, message } = data as {
       name?: string;
+      email?: string;
       phone?: string;
       city?: string;
       service?: string;
@@ -61,8 +65,8 @@ export async function POST(req: NextRequest) {
     }
 
     const results = await Promise.allSettled([
-      logToGoogleSheet({ name, phone, city, service, message }),
-      sendEmail({ name, phone, city, service, message }),
+      logToGoogleSheet({ name, email, phone, city, service, message }),
+      sendEmail({ name, email, phone, city, service, message }),
     ]);
 
     const [sheetResult, emailResult] = results;
@@ -94,12 +98,13 @@ export async function POST(req: NextRequest) {
 
 async function sendEmail(fields: {
   name: string;
+  email?: string;
   phone: string;
   city?: string;
   service?: string;
   message?: string;
 }) {
-  const { name, phone, city, service, message } = fields;
+  const { name, email, phone, city, service, message } = fields;
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     throw new Error("RESEND_API_KEY is not set");
@@ -108,6 +113,7 @@ async function sendEmail(fields: {
   const html = `
     <h2>New quote request — ${SITE.name}</h2>
     <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+    <p><strong>Email:</strong> ${escapeHtml(email || "Not provided")}</p>
     <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
     <p><strong>City:</strong> ${escapeHtml(city || "Not provided")}</p>
     <p><strong>Service:</strong> ${escapeHtml(service || "Not provided")}</p>
@@ -123,6 +129,7 @@ async function sendEmail(fields: {
     body: JSON.stringify({
       from: `${SITE.name} Website <onboarding@resend.dev>`,
       to: [SITE.email],
+      ...(email ? { reply_to: email } : {}),
       subject: `New quote request from ${name}`,
       html,
     }),

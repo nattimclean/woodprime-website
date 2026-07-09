@@ -12,6 +12,7 @@ export default function ContactForm() {
     const data = new FormData(form);
     const payload = {
       name: data.get("name"),
+      email: data.get("email"),
       phone: data.get("phone"),
       city: data.get("city"),
       service: data.get("service"),
@@ -48,6 +49,20 @@ export default function ContactForm() {
           />
         </div>
         <div>
+          <label htmlFor="email" className="mb-1 block text-sm font-medium text-espresso">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            className="w-full rounded-md border border-stone/30 px-3 py-2 text-sm focus:border-brass focus:outline-none"
+          />
+        </div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
           <label htmlFor="phone" className="mb-1 block text-sm font-medium text-espresso">
             Phone number
           </label>
@@ -59,8 +74,6 @@ export default function ContactForm() {
             className="w-full rounded-md border border-stone/30 px-3 py-2 text-sm focus:border-brass focus:outline-none"
           />
         </div>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="city" className="mb-1 block text-sm font-medium text-espresso">
             City
@@ -71,22 +84,22 @@ export default function ContactForm() {
             className="w-full rounded-md border border-stone/30 px-3 py-2 text-sm focus:border-brass focus:outline-none"
           />
         </div>
-        <div>
-          <label htmlFor="service" className="mb-1 block text-sm font-medium text-espresso">
-            Service needed
-          </label>
-          <select
-            id="service"
-            name="service"
-            className="w-full rounded-md border border-stone/30 px-3 py-2 text-sm focus:border-brass focus:outline-none"
-          >
-            <option>Home Renovation</option>
-            <option>Basement Renovation</option>
-            <option>Handyman Services</option>
-            <option>Patio, Deck, Fence or Pergola</option>
-            <option>Other / Not sure</option>
-          </select>
-        </div>
+      </div>
+      <div>
+        <label htmlFor="service" className="mb-1 block text-sm font-medium text-espresso">
+          Service needed
+        </label>
+        <select
+          id="service"
+          name="service"
+          className="w-full rounded-md border border-stone/30 px-3 py-2 text-sm focus:border-brass focus:outline-none sm:w-1/2"
+        >
+          <option>Home Renovation</option>
+          <option>Basement Renovation</option>
+          <option>Handyman Services</option>
+          <option>Patio, Deck, Fence or Pergola</option>
+          <option>Other / Not sure</option>
+        </select>
       </div>
       <div>
         <label htmlFor="message" className="mb-1 block text-sm font-medium text-espresso">
